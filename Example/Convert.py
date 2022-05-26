@@ -1,5 +1,5 @@
-#!/usr/bin/python
-#	 pip install requests
+#!/usr/bin/env python3
+
 import requests
 import os
 
