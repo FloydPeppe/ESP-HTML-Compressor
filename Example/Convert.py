@@ -23,13 +23,13 @@ def write_to_file(file, data, dir=""):
 
     # f_output.write("#define data_" + filename + "_len " + str(data.count('0x')) +"\n")
 
-def aschii2Hex(text):
+def char2ascii(text):
     output_str = ""
     x = 1
     strLen = len(text)
     for character in text:
-        output_str += hex(ord(character))
-
+        output_str += str(ord(character))
+        
         if (x != strLen):
             output_str += ","
         x += 1
@@ -59,19 +59,19 @@ for root, dirs, files in os.walk(input_dir, topdown=False):
         if name.endswith(".js"):
             print(os.path.join(root, name))
             minified = minify_js(os.path.join(root, name))          # minify javascript
-            hexified = aschii2Hex(minified)                         # convert to hex
+            hexified = char2ascii(minified)                         # convert to hex
             write_to_file(name, hexified, os.path.join(root, name)) # write to file
 
         elif name.endswith(".html"):
             print(os.path.join(root, name))
             minified = minify_html(os.path.join(root, name))        # minify html
-            hexified = aschii2Hex(minified)                         # convert to hex
+            hexified = char2ascii(minified)                         # convert to hex
             write_to_file(name, hexified, os.path.join(root, name)) # write to file
 
         elif name.endswith(".css"):
             print(os.path.join(root, name))
             minified = minify_css(os.path.join(root, name))         # minify css
-            hexified = aschii2Hex(minified)                         # convet to hex
+            hexified = char2ascii(minified)                         # convet to hex
             write_to_file(name, hexified, os.path.join(root, name)) # write to file
 
 
