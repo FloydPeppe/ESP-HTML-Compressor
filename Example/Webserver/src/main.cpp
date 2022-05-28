@@ -4,7 +4,7 @@
 #include <FS.h>
 #include <ESPAsyncWebServer.h>
 
-#include "HtmlData.h"
+#include "StaticPageData.h"
 
 AsyncWebServer server(80);
 
