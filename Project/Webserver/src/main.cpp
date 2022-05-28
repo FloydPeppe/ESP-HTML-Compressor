@@ -3,8 +3,7 @@
 #include <ESP8266WiFi.h>
 #include <FS.h>
 #include <ESPAsyncWebServer.h>
-
-#include "StaticPageData.h"
+#include <LittleFS.h>
 
 AsyncWebServer server(80);
 
@@ -14,31 +13,44 @@ AsyncWebServer server(80);
 const char * softAP_ssid= AP_SSID; // SSID of ESP's wifi
 const char * softAP_pass= AP_PASS; // Password for ESP's wifi
 
+const char* index_css_path= "/assets/index.css";
+const char* index_js_path= "/assets/index.js";
+const char* index_html_path= "/index.html";
+
 uint8_t led_val= 0;
 
 void setup(){
   Serial.begin(115200);
 
+  if(!SPIFFS.begin()){
+    Serial.println("An Error has occurred while mounting SPIFFS");
+    return;
+  }
+
   // Initialize led
   pinMode(LED_BUILTIN, OUTPUT); 
 
-  WiFi.softAP(softAP_ssid);
+  WiFi.softAP(softAP_ssid, softAP_pass);
   
   Serial.println(WiFi.localIP());
  
-  // Routing requests 
+  // Routing all requests 
   server.on("/*", HTTP_GET, [](AsyncWebServerRequest *request){
     String tmp= request->url();
   
     digitalWrite(LED_BUILTIN, led_val= !led_val);
 
-    if( tmp == data_index_5d58cbbf_css_path ){
+    if( tmp == index_css_path ){
       Serial.println("css file requested");
-      request->send_P(200, "text/css;charset=UTF-8", data_index_5d58cbbf_css);
+      request->send(SPIFFS, index_css_path, "text/css;charset=UTF-8");
     }
-    else if( tmp == data_index_d0368d6e_js_path ){
+    else if( tmp == index_js_path ){
       Serial.println("javascript file requested");
-      request->send_P(200, "text/javascript;charset=UTF-8", data_index_d0368d6e_js);
+      request->send(SPIFFS, index_js_path, "text/javascript;charset=UTF-8");
+    }
+    else if( tmp == "/favicon.ico" ){
+      Serial.println("favicon file requested");
+      request->send(SPIFFS, "/favicon.ico", "image/ico");
     }
     // Default redirecting to root "/"
     else{
@@ -46,43 +58,10 @@ void setup(){
       
       if( tmp != "/" && tmp != "/about" ) // About is another kind of page
         request->redirect("/");
-      request->send_P(200, "text/html", data_index_html);
+      request->send(SPIFFS, index_html_path, "text/html");
     }
   });
-/*
-  server.on(data_index_5d58cbbf_css_path, HTTP_GET, [](AsyncWebServerRequest *request){
-    Serial.println("jquery.js requested");
-    request->send_P(200, "text/css;charset=UTF-8", data_index_5d58cbbf_css);
-  });
 
-  server.on(data_index_d0368d6e_js_path, HTTP_GET, [](AsyncWebServerRequest *request){
-    Serial.println("jquery.js requested");
-    request->send_P(200, "text/javascript;charset=UTF-8", data_index_d0368d6e_js);
-  });
-*/
-  /*
-  server.on(data_bootstrap_min_css_path, HTTP_GET, [](AsyncWebServerRequest *request){
-    Serial.println("jquery.js requested");
-    request->send_P(200, "text/css;charset=UTF-8", data_bootstrap_min_css);
-  });
-
-  server.on(data_script_js_path, HTTP_GET, [](AsyncWebServerRequest *request){
-    Serial.println("script.js requested");
-    request->send_P(200, "text/javascript", data_script_js);
-  });
-
-
-  server.on(data_bootstrap_min_js_path, HTTP_GET, [](AsyncWebServerRequest *request){
-    Serial.println("bootstrap_min.js requested");
-    request->send_P(200, "text/javascript", data_bootstrap_min_js);
-  });
-
-
-  server.on(data_style_css_path, HTTP_GET, [](AsyncWebServerRequest *request){
-    Serial.println("style.css requested");
-    request->send_P(200, "text/css;charset=UTF-8", data_style_css);
-  });
- */
   server.begin();
 }
  
