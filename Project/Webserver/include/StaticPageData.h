@@ -8,5 +8,5 @@ const char data_index_d0368d6e_js[] PROGMEM = "const Q1=function(){const e=docum
 
 // /index.html
 const char* data_index_html_path PROGMEM = "/index.html";
-const char data_index_html[] PROGMEM = "<!doctype html>\n<html lang=en>\n<head>\n<title>Hello React!</title>\n<meta charset=UTF-8>\n<meta name=viewport content=\"width=device-width,initial-scale=1\">\n<link rel=icon href=/assets/favicon_342fe53b.ico>\n<script type=module crossorigin src=/assets/index_d0368d6e.js></script>\n<link rel=stylesheet href=/assets/index_5d58cbbf.css>\n</head>\n<body>\n<div id=root></div>\n</body>\n</html>";
+const char data_index_html[] PROGMEM = "<!doctype html>\n<html lang=en>\n<head>\n<title>Hello React!</title>\n<meta charset=UTF-8>\n<meta name=viewport content=\"width=device-width,initial-scale=1\">\n<link rel=icon href=/favicon.ico>\n<script type=module crossorigin src=/assets/index_d0368d6e.js></script>\n<link rel=stylesheet href=/assets/index_5d58cbbf.css>\n</head>\n<body>\n<div id=root></div>\n</body>\n</html>";
 
