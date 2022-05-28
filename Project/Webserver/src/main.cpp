@@ -15,6 +15,8 @@ const char * softAP_pass= AP_PASS; // Password for ESP's wifi
 
 const char* index_css_path= "/assets/index.css";
 const char* index_js_path= "/assets/index.js";
+const char* favicon_path= "/assets/favicon.ico";
+const char* svg_path= "/assets/react_logo.svg";
 const char* index_html_path= "/index.html";
 
 uint8_t led_val= 0;
@@ -48,15 +50,19 @@ void setup(){
       Serial.println("javascript file requested");
       request->send(SPIFFS, index_js_path, "text/javascript;charset=UTF-8");
     }
-    else if( tmp == "/favicon.ico" ){
+    else if( tmp == svg_path ){
+      Serial.println("svg file requested");
+      request->send(SPIFFS, svg_path, "image/svg+xml");
+    }
+    else if( tmp == favicon_path ){
       Serial.println("favicon file requested");
-      request->send(SPIFFS, "/favicon.ico", "image/ico");
+      request->send(SPIFFS, favicon_path, "image/ico");
     }
     // Default redirecting to root "/"
     else{
       Serial.println("Index.html requested"); 
       
-      if( tmp != "/" && tmp != "/about" ) // About is another kind of page
+      if( tmp != "/" && tmp != "/about" && tmp != "/obli" ) // About is another kind of page
         request->redirect("/");
       request->send(SPIFFS, index_html_path, "text/html");
     }
