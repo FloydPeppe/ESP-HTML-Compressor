@@ -19,21 +19,27 @@ def write_to_file(file, data, dir=""):
     dir = dir.replace("\\","/")                             # Chang to /
     f_output.write("// " + dir + "\n")                      # Print comment
     f_output.write("const char* data_" + filename + "_" + file_extension + "_path PROGMEM = \""+str(dir)+"\";\n")    # print path
-    f_output.write("const char data_"+filename+"_"+file_extension+"[] PROGMEM = {"+data.upper()+"};\n\n")            # print binary data
+    f_output.write("const char data_"+filename+"_"+file_extension+"[] PROGMEM = "+ data +";\n\n")            # print binary data
 
     # f_output.write("#define data_" + filename + "_len " + str(data.count('0x')) +"\n")
 
 def char2ascii(text):
-    output_str = ""
+    output_str = "\""
     x = 1
     strLen = len(text)
     for character in text:
-        output_str += str(ord(character))
+        #output_str += str(ord(character))
+        if character == '\n':
+            character= '\\n'
+        if character != '\"' and character != '\'' and character != "\\":
+            output_str += character
+        else:
+            output_str += "\\" + character
         
-        if (x != strLen):
-            output_str += ","
-        x += 1
-    return output_str
+        #if (x != strLen):
+        #    output_str += ","
+        #x += 1
+    return output_str + "\""
 
 def minify_js(input_file):
     url = URL_minify_js
