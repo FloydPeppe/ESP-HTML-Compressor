@@ -39,28 +39,28 @@ void setup(){
   
     digitalWrite(LED_BUILTIN, led_val= !led_val);
 
-    if( tmp == index_css_path ){
+    if( tmp == INDEX_CSS_PATH ){
       Serial.println("css file requested");
-      request->send(SPIFFS, index_css_path, "text/css;charset=UTF-8");
+      request->send(SPIFFS, INDEX_CSS_PATH, "text/css;charset=UTF-8");
     }
-    else if( tmp == index_js_path ){
+    else if( tmp == INDEX_JS_PATH ){
       Serial.println("javascript file requested");
-      request->send(SPIFFS, index_js_path, "text/javascript;charset=UTF-8");
+      request->send(SPIFFS, INDEX_JS_PATH, "text/javascript;charset=UTF-8");
     }
-    else if( tmp == logo_svg_path ){
+    else if( tmp == LOGO_SVG_PATH ){
       Serial.println("svg file requested");
-      request->send(SPIFFS, logo_svg_path, "image/svg+xml");
+      request->send(SPIFFS, LOGO_SVG_PATH, "image/svg+xml");
     }
-    else if( tmp == favicon_ico_path ){
+    else if( tmp == FAVICON_ICO_PATH ){
       Serial.println("favicon file requested");
-      request->send(SPIFFS, favicon_ico_path, "image/ico");
+      request->send(SPIFFS, FAVICON_ICO_PATH, "image/ico");
     }
     // Default redirecting to root "/"
     else{
       Serial.println("Index.html requested"); 
       if( tmp != "/" && tmp != "/about" && tmp != "/obli" ) // "about" and "obli" are other kind of pages and they don't have to be redircted to "/"
         request->redirect("/");
-      request->send(SPIFFS, index_html_path, "text/html");
+      request->send(SPIFFS, INDEX_HTML_PATH, "text/html");
     }
   });
 
