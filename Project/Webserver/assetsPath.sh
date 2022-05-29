@@ -1,4 +1,24 @@
 
-files=($(find data/ -regex ".*\..*"))
+files=($(find data -regex ".*\..*"))
 
-C_string="const char* 
+outfile="./include/assetsPath.h"
+
+rm $outfile
+
+echo "
+/*
+ * 
+ * Definition of assets path strings 
+ *
+ */
+ " > $outfile
+
+for i in ${files[*]}; do 
+    path=$(echo $i | sed 's/data//g' )
+    namefile="$(echo $path | sed 's/\/assets\///g' | sed 's/\///g' | sed 's/\./_/g')"_path
+    echo "const char* $namefile= \"$path\";" >> $outfile
+done
+
+exit
+
+

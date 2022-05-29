@@ -5,6 +5,8 @@
 #include <ESPAsyncWebServer.h>
 #include <LittleFS.h>
 
+#include "assetsPath.h"
+
 AsyncWebServer server(80);
 
 #define AP_SSID "ObliCarina"
@@ -12,12 +14,6 @@ AsyncWebServer server(80);
 
 const char * softAP_ssid= AP_SSID; // SSID of ESP's wifi
 const char * softAP_pass= AP_PASS; // Password for ESP's wifi
-
-const char* index_css_path= "/assets/index.css";
-const char* index_js_path= "/assets/index.js";
-const char* favicon_path= "/assets/favicon.ico";
-const char* svg_path= "/assets/react_logo.svg";
-const char* index_html_path= "/index.html";
 
 uint8_t led_val= 0;
 
@@ -50,19 +46,18 @@ void setup(){
       Serial.println("javascript file requested");
       request->send(SPIFFS, index_js_path, "text/javascript;charset=UTF-8");
     }
-    else if( tmp == svg_path ){
+    else if( tmp == logo_svg_path ){
       Serial.println("svg file requested");
-      request->send(SPIFFS, svg_path, "image/svg+xml");
+      request->send(SPIFFS, logo_svg_path, "image/svg+xml");
     }
-    else if( tmp == favicon_path ){
+    else if( tmp == favicon_ico_path ){
       Serial.println("favicon file requested");
-      request->send(SPIFFS, favicon_path, "image/ico");
+      request->send(SPIFFS, favicon_ico_path, "image/ico");
     }
     // Default redirecting to root "/"
     else{
       Serial.println("Index.html requested"); 
-      
-      if( tmp != "/" && tmp != "/about" && tmp != "/obli" ) // About is another kind of page
+      if( tmp != "/" && tmp != "/about" && tmp != "/obli" ) // "about" and "obli" are other kind of pages and they don't have to be redircted to "/"
         request->redirect("/");
       request->send(SPIFFS, index_html_path, "text/html");
     }
@@ -72,5 +67,5 @@ void setup(){
 }
  
 void loop(){
-  Serial.println("ciao\n");
+  
 }
