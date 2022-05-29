@@ -18,6 +18,7 @@ const char * softAP_pass= AP_PASS; // Password for ESP's wifi
 uint8_t led_val= 0;
 
 void setup(){
+  // Initialize serial baudrate
   Serial.begin(115200);
 
   if(!SPIFFS.begin()){
